@@ -24,6 +24,18 @@ export interface BundleOptions extends RunOptions {
     
     /** Print verbose success and status messages. This may also provide slightly more information on error. */
     verbose?: boolean;
+
+    /**
+     * This callback is executed after the copy of sfx and before the bundling.
+     * This allows to customize the exectuable before bundling it (eg. rcedit).
+     */
+    beforeBundle?: () => PromiseLike<any> | any;
+
+    /** 
+     * This callback is executed after the bundling of the archive into sfx.
+     * This allows to customize the final executable (eg. sign).
+     */
+    afterBundle?: () => PromiseLike<any> | any;
 }
 
 export interface RunOptions {
@@ -73,7 +85,21 @@ export function bundle(dest: string, dir: string, options: BundleOptions = {}): 
 
     return mkdir(path.dirname(dest))
         .then(() => copy(dest, options))
-        .then(() => run(args, options));
+        .then(() => {
+            if (typeof options.beforeBundle === "function") {
+                const val = options.beforeBundle.call(null);
+                return Promise.resolve(val);
+            }
+        })
+        .then(() => run(args, options))
+        .then(res => {
+            if (typeof options.afterBundle === "function") {
+                const val = options.afterBundle.call(null);
+                return Promise.resolve(val).then(() => res);
+            }
+
+            return res;
+        });
 }
 
 /**

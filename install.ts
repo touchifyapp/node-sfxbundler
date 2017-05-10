@@ -25,11 +25,7 @@ function downloadTarget(target: string): Promise<void> {
         GITHUB_USER,
         GITHUB_REPO,
         dest,
-        filterRelease,
+        () => true,
         (asset: { name: string }) => asset.name === `sfx-${target}.zip`
     );
-}
-
-function filterRelease(release: { tag_name: string }): boolean {
-    return release.tag_name === `v${VERSION}`;
 }
