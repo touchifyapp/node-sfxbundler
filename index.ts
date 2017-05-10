@@ -2,6 +2,8 @@ import * as path from "path";
 import * as fs from "fs";
 import { spawn, SpawnOptions } from "child_process";
 
+import * as mkdirp from "mkdirp";
+
 export interface BundleOptions extends RunOptions {
     /** A unique ID for the result SFX. (default: from dest name). */
     id?: string;
@@ -69,7 +71,8 @@ export function bundle(dest: string, dir: string, options: BundleOptions = {}): 
 
     if (options.verbose) args.push("-v");
 
-    return copy(dest, options)
+    return mkdir(path.dirname(dest))
+        .then(() => copy(dest, options))
         .then(() => run(args, options));
 }
 
@@ -129,6 +132,16 @@ function copy(dest: string, options: BundleOptions): Promise<void> {
             .pipe(fs.createWriteStream(dest))
             .on("error", reject)
             .on("finish", resolve)
+    });
+}
+
+function mkdir(dir: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+        mkdirp(dir, err => {
+            err ?
+                reject(err) :
+                resolve();
+        });
     });
 }
 
