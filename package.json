@@ -1,6 +1,6 @@
 {
   "name": "sfxbundler",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node module wrapper around the touchifyapp/sfx binaries.",
   "author": "Touchify (dev@touchify.co)",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "url": "https://github.com/touchifyapp/node-sfxbundler.git"
   },
   "bin": {
-      "sfxbundler": "bin/sfxbundler.js"
+    "sfxbundler": "bin/sfxbundler.js"
   },
   "scripts": {
     "build": "tsc -p .",
