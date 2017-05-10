@@ -12,7 +12,7 @@ It abstracts the commands' switches with JS object abstraction.
 `node-sfxbundler` can be installed using NPM:
 
 ```shell
-$ npm install node-sfxbundler --save
+$ npm install sfxbundler --save
 ```
 
 ### Usage
@@ -46,7 +46,7 @@ sfxbundler.bundle("path/to/my.exe", { certificate: "path/to/my/cert.pfx", passwo
 
 ```shell
 # Install module globally
-$ npm install node-sfxbundler -g
+$ npm install sfxbundler -g
 
 # Run module from command line
 $ sfxbundler -exe path/to/sfx.exe -dir path/to/dir -id my.app.id
