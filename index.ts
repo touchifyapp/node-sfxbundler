@@ -178,8 +178,12 @@ function undef(val: any): val is undefined {
 function sfxbundler(): string {
     if ((<any>sfxbundler).result) return (<any>sfxbundler).result;
 
-    const bin = process.platform === "win32" ? "bundler.exe" : "bundler";
-
+    const bin = process.platform === "win32" 
+        ? "bundler.exe"
+        : process.platform === "darwin"
+            ? "bundlerosx"
+            : "bundler";
+            
     switch(process.arch) {
         case "ia32":
             return ((<any>sfxbundler).result = path.join(__dirname, "sfx-bin", "i386", bin));
